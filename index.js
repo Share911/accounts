@@ -221,7 +221,7 @@ var insertUserDoc = function () {
   };
 }();
 
-var _underscore = require('meteor/underscore');
+var _underscore = require('underscore');
 
 var _meteorCheck = require('meteor-check');
 

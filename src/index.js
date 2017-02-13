@@ -1,4 +1,4 @@
-import { _ } from 'meteor/underscore'
+import { _ } from 'underscore'
 import { check, Match } from 'meteor-check'
 import * as Meteor from '@share911/meteor-error'
 import bcrypt from 'bcryptjs'

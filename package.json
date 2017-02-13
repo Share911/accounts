@@ -1,6 +1,6 @@
 {
   "name": "@share911/accounts",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "scripts": {
     "build": "babel -d . src/",
     "prepublish": "npm run build"
