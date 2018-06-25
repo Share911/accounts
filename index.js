@@ -14,7 +14,7 @@ var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
 var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
 
 var createUser = function () {
-  var _ref4 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee3(options) {
+  var _ref4 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(options) {
     var username, email, user, hashed, userId;
     return _regenerator2.default.wrap(function _callee3$(_context3) {
       while (1) {
@@ -111,7 +111,7 @@ var createUser = function () {
 }();
 
 var insertUserDoc = function () {
-  var _ref5 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee4(_ref6, options, user) {
+  var _ref5 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4(_ref6, options, user) {
     var db = _ref6.db;
     var fullUser, userId;
     return _regenerator2.default.wrap(function _callee4$(_context4) {
@@ -229,9 +229,9 @@ var _meteorError = require('@share911/meteor-error');
 
 var Meteor = _interopRequireWildcard(_meteorError);
 
-var _bcryptjs = require('bcryptjs');
+var _bcrypt = require('bcrypt');
 
-var _bcryptjs2 = _interopRequireDefault(_bcryptjs);
+var _bcrypt2 = _interopRequireDefault(_bcrypt);
 
 var _meteorSha = require('@share911/meteor-sha');
 
@@ -269,14 +269,14 @@ var getPasswordString = function getPasswordString(password) {
 // `algorithm` (in which case we bcrypt `password.digest`).
 //
 var hashPassword = function () {
-  var _ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee(password) {
+  var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(password) {
     return _regenerator2.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
             password = getPasswordString(password);
             _context.next = 3;
-            return _bcryptjs2.default.hash(password, 10);
+            return _bcrypt2.default.hash(password, 10);
 
           case 3:
             return _context.abrupt('return', _context.sent);
@@ -340,7 +340,7 @@ var generateCasePermutationsForString = function generateCasePermutationsForStri
 };
 
 var checkForCaseInsensitiveDuplicates = function () {
-  var _ref2 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee2(_ref3, fieldName, displayName, fieldValue, ownUserId) {
+  var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(_ref3, fieldName, displayName, fieldValue, ownUserId) {
     var db = _ref3.db;
     var skipCheck, matchedUsers;
     return _regenerator2.default.wrap(function _callee2$(_context2) {

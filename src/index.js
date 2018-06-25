@@ -1,7 +1,7 @@
 import { _ } from 'underscore'
 import { check, Match } from 'meteor-check'
 import * as Meteor from '@share911/meteor-error'
-import bcrypt from 'bcryptjs'
+import bcrypt from 'bcrypt'
 import { SHA256 } from '@share911/meteor-sha'
 import { Random } from '@share911/meteor-random'
 
