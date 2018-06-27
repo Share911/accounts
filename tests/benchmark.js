@@ -11,8 +11,8 @@ async function test() {
     promises.push(Accounts.createUser({
       username: 'Test' + i,
       email: `test${i}@example.com`,
-      password: 'password',
-      db
+      db,
+      checkForDuplicates: false
     }))
   }
 

@@ -135,21 +135,27 @@ async function createUser(options) {
   if (email)
     user.emails = [{address: email, verified: false}];
 
-  // Perform a case insensitive check before insert
-  await checkForCaseInsensitiveDuplicates({db: options.db}, 'username', 'Username', username);
-  await checkForCaseInsensitiveDuplicates({db: options.db}, 'emails.address', 'Email', email);
+  if (options.checkForDuplicates !== false) {
+    // Perform a case insensitive check before insert
+    await checkForCaseInsensitiveDuplicates({db: options.db}, 'username', 'Username', username);
+    await checkForCaseInsensitiveDuplicates({db: options.db}, 'emails.address', 'Email', email);
+  }
 
   var userId = await insertUserDoc({db: options.db}, options, user);
-  // Perform another check after insert, in case a matching user has been
-  // inserted in the meantime
-  try {
-    await checkForCaseInsensitiveDuplicates({db: options.db}, 'username', 'Username', username, userId);
-    await checkForCaseInsensitiveDuplicates({db: options.db}, 'emails.address', 'Email', email, userId);
-  } catch (ex) {
-    // Remove inserted user if the check fails
-    await options.db.collection('users').remove({_id: userId});
-    throw ex;
+
+  if (options.checkForDuplicates !== false) {
+    // Perform another check after insert, in case a matching user has been
+    // inserted in the meantime
+    try {
+      await checkForCaseInsensitiveDuplicates({db: options.db}, 'username', 'Username', username, userId);
+      await checkForCaseInsensitiveDuplicates({db: options.db}, 'emails.address', 'Email', email, userId);
+    } catch (ex) {
+      // Remove inserted user if the check fails
+      await options.db.collection('users').remove({_id: userId});
+      throw ex;
+    }
   }
+
   return userId;
 }
 

@@ -59,50 +59,60 @@ var createUser = function () {
             if (username) user.username = username;
             if (email) user.emails = [{ address: email, verified: false }];
 
-            // Perform a case insensitive check before insert
-            _context3.next = 15;
+            if (!(options.checkForDuplicates !== false)) {
+              _context3.next = 18;
+              break;
+            }
+
+            _context3.next = 16;
             return checkForCaseInsensitiveDuplicates({ db: options.db }, 'username', 'Username', username);
 
-          case 15:
-            _context3.next = 17;
+          case 16:
+            _context3.next = 18;
             return checkForCaseInsensitiveDuplicates({ db: options.db }, 'emails.address', 'Email', email);
 
-          case 17:
-            _context3.next = 19;
+          case 18:
+            _context3.next = 20;
             return insertUserDoc({ db: options.db }, options, user);
 
-          case 19:
+          case 20:
             userId = _context3.sent;
-            _context3.prev = 20;
-            _context3.next = 23;
+
+            if (!(options.checkForDuplicates !== false)) {
+              _context3.next = 34;
+              break;
+            }
+
+            _context3.prev = 22;
+            _context3.next = 25;
             return checkForCaseInsensitiveDuplicates({ db: options.db }, 'username', 'Username', username, userId);
 
-          case 23:
-            _context3.next = 25;
+          case 25:
+            _context3.next = 27;
             return checkForCaseInsensitiveDuplicates({ db: options.db }, 'emails.address', 'Email', email, userId);
 
-          case 25:
-            _context3.next = 32;
+          case 27:
+            _context3.next = 34;
             break;
 
-          case 27:
-            _context3.prev = 27;
-            _context3.t0 = _context3['catch'](20);
-            _context3.next = 31;
+          case 29:
+            _context3.prev = 29;
+            _context3.t0 = _context3['catch'](22);
+            _context3.next = 33;
             return options.db.collection('users').remove({ _id: userId });
 
-          case 31:
+          case 33:
             throw _context3.t0;
 
-          case 32:
+          case 34:
             return _context3.abrupt('return', userId);
 
-          case 33:
+          case 35:
           case 'end':
             return _context3.stop();
         }
       }
-    }, _callee3, this, [[20, 27]]);
+    }, _callee3, this, [[22, 29]]);
   }));
 
   return function createUser(_x7) {
