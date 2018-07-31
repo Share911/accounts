@@ -1,6 +1,11 @@
 {
   "name": "@share911/accounts",
-  "version": "2.1.0",
+  "version": "2.2.0",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Share911/accounts.git"
+  },
   "engines": {
     "node": ">= 6.0.0"
   },
