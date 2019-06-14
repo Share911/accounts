@@ -1,5 +1,5 @@
 import { _ } from 'underscore'
-import { check, Match } from 'meteor-check'
+import { check, Match } from '@share911/meteor-check'
 import * as Meteor from '@share911/meteor-error'
 import bcrypt from 'bcrypt'
 import { SHA256 } from '@share911/meteor-sha'

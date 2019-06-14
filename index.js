@@ -233,7 +233,7 @@ var insertUserDoc = function () {
 
 var _underscore = require('underscore');
 
-var _meteorCheck = require('meteor-check');
+var _meteorCheck = require('@share911/meteor-check');
 
 var _meteorError = require('@share911/meteor-error');
 
