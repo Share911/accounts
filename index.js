@@ -188,12 +188,11 @@ function () {
   return function checkForCaseInsensitiveDuplicates(_x2, _x3, _x4, _x5, _x6) {
     return _ref3.apply(this, arguments);
   };
-}();
+}(); // var passwordValidator = Match.OneOf(
+//   String,
+//   { digest: String, algorithm: String }
+// );
 
-var passwordValidator = Match.OneOf(String, {
-  digest: String,
-  algorithm: String
-});
 
 function validateOptions(options) {
   if ((0, _typeof2["default"])(options) != "object") {
