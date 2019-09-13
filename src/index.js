@@ -1,5 +1,4 @@
 import { _ } from 'underscore'
-import { check, Match } from '@share911/meteor-check'
 import * as Meteor from '@share911/meteor-error'
 import bcrypt from 'bcrypt'
 import { SHA256 } from '@share911/meteor-sha'
@@ -63,7 +62,7 @@ var selectorForFastCaseInsensitiveLookup = function (fieldName, string) {
   var caseInsensitiveClause = {};
   caseInsensitiveClause[fieldName] =
     new RegExp('^' + _escapeRegExp(string) + '$', 'i')
-  return {$and: [{$or: orClause}, caseInsensitiveClause]};
+  return { $and: [{ $or: orClause }, caseInsensitiveClause] };
 }
 
 // Generates permutations of all case variations of a given string.
@@ -85,7 +84,7 @@ var generateCasePermutationsForString = function (string) {
   return permutations;
 }
 
-var checkForCaseInsensitiveDuplicates = async function ({db}, fieldName, displayName, fieldValue, ownUserId) {
+var checkForCaseInsensitiveDuplicates = async function ({ db }, fieldName, displayName, fieldValue, ownUserId) {
   // Some tests need the ability to add users with the same case insensitive
   // value, hence the _skipCaseInsensitiveChecksForTest check
   var skipCheck = _.has(Accounts._skipCaseInsensitiveChecksForTest, fieldValue);
@@ -97,34 +96,58 @@ var checkForCaseInsensitiveDuplicates = async function ({db}, fieldName, display
     if (matchedUsers.length > 0 &&
       // If we don't have a userId yet, any match we find is a duplicate
       (!ownUserId ||
-      // Otherwise, check to see if there are multiple matches or a match
-      // that is not us
-      (matchedUsers.length > 1 || matchedUsers[0]._id !== ownUserId))) {
+        // Otherwise, check to see if there are multiple matches or a match
+        // that is not us
+        (matchedUsers.length > 1 || matchedUsers[0]._id !== ownUserId))) {
       throw new Meteor.Error(403, displayName + " already exists.");
     }
   }
 };
 
-var passwordValidator = Match.OneOf(
-  String,
-  { digest: String, algorithm: String }
-);
+// var passwordValidator = Match.OneOf(
+//   String,
+//   { digest: String, algorithm: String }
+// );
+
+export function validateOptions(options) {
+  if (typeof options != "object") {
+    throw new Error()
+  }
+  if (options.username && typeof options.username != 'string') {
+    throw new Error()
+  }
+  if (options.email && typeof options.email != 'string') {
+    throw new Error()
+  }
+  if (options.password) {
+    if (typeof options.password == 'object') {
+      if (typeof options.password.digest != 'string'
+        || typeof options.password.algorithm != 'string') {
+        throw new Error()
+      }
+    } else if (typeof options.password != 'string') {
+      throw new Error()
+    }
+  }
+}
 
 async function createUser(options) {
   // Unknown keys allowed, because a onCreateUserHook can take arbitrary
   // options.
-  check(options, Match.ObjectIncluding({
-    username: Match.Optional(String),
-    email: Match.Optional(String),
-    password: Match.Optional(passwordValidator)
-  }));
+  validateOptions(options)
+  // removing '@share911/meteor-error' from dependencies to avoid conflicts with Lambda/Optimize
+  // check(options, Match.ObjectIncluding({
+  //   username: Match.Optional(String),
+  //   email: Match.Optional(String),
+  //   password: Match.Optional(passwordValidator)
+  // }));
 
   var username = options.username;
   var email = options.email;
   if (!username && !email)
     throw new Meteor.Error(400, "Need to set a username or email");
 
-  var user = {services: {}};
+  var user = { services: {} };
   if (options.password) {
     var hashed = await hashPassword(options.password);
     user.services.password = { bcrypt: hashed };
@@ -133,25 +156,25 @@ async function createUser(options) {
   if (username)
     user.username = username;
   if (email)
-    user.emails = [{address: email, verified: false}];
+    user.emails = [{ address: email, verified: false }];
 
   if (options.checkForDuplicates !== false) {
     // Perform a case insensitive check before insert
-    await checkForCaseInsensitiveDuplicates({db: options.db}, 'username', 'Username', username);
-    await checkForCaseInsensitiveDuplicates({db: options.db}, 'emails.address', 'Email', email);
+    await checkForCaseInsensitiveDuplicates({ db: options.db }, 'username', 'Username', username);
+    await checkForCaseInsensitiveDuplicates({ db: options.db }, 'emails.address', 'Email', email);
   }
 
-  var userId = await insertUserDoc({db: options.db}, options, user);
+  var userId = await insertUserDoc({ db: options.db }, options, user);
 
   if (options.checkForDuplicates !== false) {
     // Perform another check after insert, in case a matching user has been
     // inserted in the meantime
     try {
-      await checkForCaseInsensitiveDuplicates({db: options.db}, 'username', 'Username', username, userId);
-      await checkForCaseInsensitiveDuplicates({db: options.db}, 'emails.address', 'Email', email, userId);
+      await checkForCaseInsensitiveDuplicates({ db: options.db }, 'username', 'Username', username, userId);
+      await checkForCaseInsensitiveDuplicates({ db: options.db }, 'emails.address', 'Email', email, userId);
     } catch (ex) {
       // Remove inserted user if the check fails
-      await options.db.collection('users').remove({_id: userId});
+      await options.db.collection('users').remove({ _id: userId });
       throw ex;
     }
   }
@@ -159,7 +182,7 @@ async function createUser(options) {
   return userId;
 }
 
-async function insertUserDoc({db}, options, user) {
+async function insertUserDoc({ db }, options, user) {
   // - clone user document, to protect from modification
   // - add createdAt timestamp
   // - prepare an _id, so that you can modify other collections (eg
@@ -195,7 +218,7 @@ async function insertUserDoc({db}, options, user) {
   }
 
   _.each(this && this._validateNewUserHooks, function (hook) {
-    if (! hook(fullUser))
+    if (!hook(fullUser))
       throw new Meteor.Error(403, "User validation failed");
   });
 
