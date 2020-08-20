@@ -19,7 +19,7 @@
     "@share911/meteor-error": "^1.0.0",
     "@share911/meteor-random": "^1.0.0",
     "@share911/meteor-sha": "^1.0.0",
-    "bcrypt": "^3.0.6",
+    "bcrypt": "^5.0.0",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
