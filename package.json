@@ -30,6 +30,6 @@
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^23.4.2",
     "jest": "^24.9.0",
-    "mongodb": "^3.1.0"
+    "mongodb": "^3.1.13"
   }
 }
