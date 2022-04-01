@@ -247,5 +247,6 @@ function defaultCreateUserHook(options, user) {
 }
 
 export const Accounts = {
-  createUser
+  createUser,
+  hashPassword,
 }
