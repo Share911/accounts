@@ -465,6 +465,7 @@ function defaultCreateUserHook(options, user) {
 }
 
 var Accounts = {
-  createUser: createUser
+  createUser: createUser,
+  hashPassword: hashPassword
 };
 exports.Accounts = Accounts;
