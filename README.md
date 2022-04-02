@@ -12,10 +12,13 @@ npm i @share911/accounts
 Use package:
 
 ```
-import { createUser, hashPassword } from '@share911/accounts'
+import { Accounts } from '@share911/accounts'
+
+Accounts.createUser(...)
+Accounts.hashPassword(...)
 ```
 
-Publish package to NPM (after you bump version):
+How to publish the package to NPM (after you bump version):
 
 ```
 npm login
